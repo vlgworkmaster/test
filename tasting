@@ -1,0 +1,32 @@
+import asyncio
+import logging
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command
+
+# 1. Вставьте сюда токен, который дал BotFather
+TOKEN = "ВАШ_ТОКЕН_ИЗ_ШАГА_1"
+
+# 2. Инициализация бота и диспетчера (обработчика событий)
+bot = Bot(token=TOKEN)
+dp = Dispatcher()
+
+# 3. Обработка команды /start
+@dp.message(Command("start"))
+async def cmd_start(message: types.Message):
+    await message.reply("Привет! Я твой первый бот. Я работаю на коде из GitHub!")
+
+# 4. Обработка любого текстового сообщения (Эхо-эффект)
+@dp.message()
+async def echo(message: types.Message):
+    # Бот просто берет текст пользователя и отправляет его обратно
+    await message.answer(f"Ты сказал: {message.text}")
+
+# 5. Запуск бота
+async def main():
+    # Начинаем слушать серверы Telegram
+    await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    # Включаем логирование, чтобы видеть ошибки в консоли
+    logging.basicConfig(level=logging.INFO)
+    asyncio.run(main())
